@@ -1,3 +1,23 @@
+---
+id: cs1-unit1
+title: CMU CS Academy CS1 Unit 1 Tutor
+topics:
+  - variables
+  - assignment
+  - functions
+  - strings
+  - labels
+  - rectangles
+  - circles
+  - lines
+  - ovals
+  - polygons
+  - colors
+  - coordinates
+  - debugging
+  - quiz
+---
+
 # CMU CS Academy CS1 Unit 1 Tutor
 
 ## Purpose

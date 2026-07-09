@@ -12,6 +12,7 @@ export default function HomePage() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeSkill, setActiveSkill] = useState<string | null>(null);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,6 +39,8 @@ export default function HomePage() {
 
       const data = (await response.json()) as {
         content?: string;
+        skillId?: string;
+        skillTitle?: string;
         error?: string;
       };
 
@@ -50,6 +53,10 @@ export default function HomePage() {
       }
 
       const assistantContent = data.content;
+
+      if (data.skillTitle) {
+        setActiveSkill(data.skillTitle);
+      }
 
       setMessages((current) => [
         ...current,
@@ -115,7 +122,11 @@ export default function HomePage() {
             aria-label="Your question"
           />
           <div className="composer-actions">
-            <p className="hint">Powered by skills/cs1-unit1/SKILL.md</p>
+            <p className="hint">
+              {activeSkill
+                ? `Skill: ${activeSkill}`
+                : "Agent selects the best Skill for your question"}
+            </p>
             <button type="submit" disabled={isLoading || !input.trim()}>
               {isLoading ? "Sending…" : "Send"}
             </button>

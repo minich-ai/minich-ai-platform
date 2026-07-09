@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import { loadCs1Unit1Skill } from "@/lib/skill";
+import { runAgent, type AgentMessage } from "@/lib/agent";
 
-export type ChatMessage = {
-  role: "user" | "assistant";
-  content: string;
-};
+export type ChatMessage = AgentMessage;
 
 export async function POST(request: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -35,24 +32,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const skill = await loadCs1Unit1Skill();
-    const openai = new OpenAI({ apiKey });
+    const result = await runAgent(messages, apiKey);
 
-    const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
-      messages: [{ role: "system", content: skill }, ...messages],
+    return NextResponse.json({
+      content: result.content,
+      skillId: result.skillId,
+      skillTitle: result.skillTitle,
     });
-
-    const content = completion.choices[0]?.message?.content;
-
-    if (!content) {
-      return NextResponse.json(
-        { error: "No response received from the model." },
-        { status: 502 }
-      );
-    }
-
-    return NextResponse.json({ content });
   } catch (error) {
     console.error("Chat API error:", error);
 
