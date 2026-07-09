@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 
-export const SKILL_IDS = ["cs1-unit1"] as const;
+export const SKILL_IDS = ["cs1-unit1", "cs1-unit2"] as const;
 
 export type SkillId = (typeof SKILL_IDS)[number];
 
@@ -39,7 +39,8 @@ function parseFrontmatter(raw: string): {
 
     const listMatch = trimmed.match(/^- (.+)$/);
     if (listMatch && currentListKey === "topics") {
-      metadata.topics?.push(listMatch[1].trim());
+      const value = listMatch[1].trim().replace(/^["']|["']$/g, "");
+      metadata.topics?.push(value);
       continue;
     }
 

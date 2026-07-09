@@ -21,25 +21,42 @@ function latestUserMessage(messages: AgentMessage[]): string {
   return "";
 }
 
+function topicMatches(text: string, topic: string): boolean {
+  if (topic === "==") return text.includes("==");
+  if (topic === "!=") return text.includes("!=");
+
+  const escaped = topic.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(?:\\b)${escaped}(?:\\b)`, "i").test(text);
+}
+
+type SkillScore = {
+  id: SkillId;
+  score: number;
+  specificity: number;
+};
+
 export async function selectSkill(userMessage: string): Promise<SkillId> {
   const skills = await listSkills();
-  const normalized = userMessage.toLowerCase();
+  const scores: SkillScore[] = skills.map((skill) => {
+    let score = 0;
+    let specificity = 0;
 
-  let bestId = skills[0]?.id ?? "cs1-unit1";
-  let bestScore = -1;
-
-  for (const skill of skills) {
-    const score = skill.topics.reduce((total, topic) => {
-      return normalized.includes(topic.toLowerCase()) ? total + 1 : total;
-    }, 0);
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestId = skill.id;
+    for (const topic of skill.topics) {
+      if (topicMatches(userMessage, topic)) {
+        score += 1;
+        specificity += topic.length;
+      }
     }
-  }
 
-  return bestId;
+    return { id: skill.id, score, specificity };
+  });
+
+  scores.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return b.specificity - a.specificity;
+  });
+
+  return scores[0]?.id ?? "cs1-unit1";
 }
 
 export async function runAgent(

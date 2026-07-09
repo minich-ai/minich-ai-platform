@@ -79,10 +79,10 @@ export default function HomePage() {
     <main className="app">
       <header className="header">
         <p className="eyebrow">Minich AI Platform</p>
-        <h1>CS1 Unit 1 Tutor</h1>
+        <h1>CS1 Tutor</h1>
         <p>
-          Ask a programming question. Responses follow the CS1 Unit 1 Skill —
-          Socratic, encouraging, and scoped to Unit 1.
+          Ask a programming question. The agent selects the best Skill for your
+          topic — Unit 1 (shapes and variables) or Unit 2 (conditionals).
         </p>
       </header>
 
@@ -90,7 +90,8 @@ export default function HomePage() {
         {messages.length === 0 && !isLoading ? (
           <div className="empty-state">
             Try: &ldquo;I&apos;m confused why my rectangle doesn&apos;t
-            appear.&rdquo;
+            appear.&rdquo; or &ldquo;What&apos;s the difference between = and
+            ==?&rdquo;
           </div>
         ) : (
           <div className="messages">
@@ -117,7 +118,7 @@ export default function HomePage() {
           <textarea
             value={input}
             onChange={(event) => setInput(event.target.value)}
-            placeholder="Ask a Unit 1 programming question…"
+            placeholder="Ask a CS1 programming question…"
             disabled={isLoading}
             aria-label="Your question"
           />

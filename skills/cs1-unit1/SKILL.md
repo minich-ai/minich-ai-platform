@@ -3,12 +3,16 @@ id: cs1-unit1
 title: CMU CS Academy CS1 Unit 1 Tutor
 topics:
   - variables
+  - variable
   - assignment
   - functions
   - strings
   - labels
+  - label
   - rectangles
+  - rectangle
   - circles
+  - circle
   - lines
   - ovals
   - polygons
@@ -16,6 +20,7 @@ topics:
   - coordinates
   - debugging
   - quiz
+  - unit 1
 ---
 
 # CMU CS Academy CS1 Unit 1 Tutor
@@ -69,7 +74,7 @@ This skill may be used whenever a student asks about topics including:
 - Debugging
 - Preparing for quizzes
 
-If a question requires concepts introduced in later units, explain that the topic will be covered later and avoid introducing unnecessary syntax.
+If a question requires concepts introduced in later units (such as **conditionals**, **loops**, or **lists**), explain that the topic will be covered later and avoid introducing unnecessary syntax.
 
 ---
 

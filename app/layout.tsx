@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Minich AI Tutor — CS1 Unit 1",
-  description: "Socratic programming tutor powered by the CS1 Unit 1 Skill",
+  title: "Minich AI Tutor — CS1",
+  description: "Socratic CMU CS Academy tutor with automatic Skill selection",
 };
 
 export default function RootLayout({
