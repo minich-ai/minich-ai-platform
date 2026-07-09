@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import { runAgent, type AgentMessage } from "@/lib/agent";
+import { CMU_UNIT1_TUTOR_PROMPT } from "@/lib/prompts/cmuUnit1TutorPrompt";
 
-export type ChatMessage = AgentMessage;
+export type ChatMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
 
 export async function POST(request: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -32,12 +35,26 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const result = await runAgent(messages, apiKey);
+    const openai = new OpenAI({ apiKey });
+
+    const completion = await openai.chat.completions.create({
+      model: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
+      messages: [{ role: "system", content: CMU_UNIT1_TUTOR_PROMPT }, ...messages],
+    });
+
+    const content = completion.choices[0]?.message?.content;
+
+    if (!content) {
+      return NextResponse.json(
+        { error: "No response received from the model." },
+        { status: 502 }
+      );
+    }
 
     return NextResponse.json({
-      content: result.content,
-      skillId: result.skillId,
-      skillTitle: result.skillTitle,
+      content,
+      skillId: "cs1-unit1",
+      skillTitle: "CMU CS Academy CS1 Unit 1 Tutor",
     });
   } catch (error) {
     console.error("Chat API error:", error);

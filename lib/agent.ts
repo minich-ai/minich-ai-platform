@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { loadSkill, listSkills, type SkillId } from "@/lib/skill";
+import { CMU_UNIT1_TUTOR_PROMPT } from "@/lib/prompts/cmuUnit1TutorPrompt";
 
 export type AgentMessage = {
   role: "user" | "assistant";
@@ -18,6 +19,7 @@ function latestUserMessage(messages: AgentMessage[]): string {
       return messages[i].content;
     }
   }
+
   return "";
 }
 
@@ -37,6 +39,7 @@ type SkillScore = {
 
 export async function selectSkill(userMessage: string): Promise<SkillId> {
   const skills = await listSkills();
+
   const scores: SkillScore[] = skills.map((skill) => {
     let score = 0;
     let specificity = 0;
@@ -48,7 +51,11 @@ export async function selectSkill(userMessage: string): Promise<SkillId> {
       }
     }
 
-    return { id: skill.id, score, specificity };
+    return {
+      id: skill.id,
+      score,
+      specificity,
+    };
   });
 
   scores.sort((a, b) => {
@@ -59,19 +66,42 @@ export async function selectSkill(userMessage: string): Promise<SkillId> {
   return scores[0]?.id ?? "cs1-unit1";
 }
 
+function buildSystemPrompt(skillPrompt: string): string {
+  return `
+${CMU_UNIT1_TUTOR_PROMPT}
+
+Additional selected skill instructions:
+
+${skillPrompt}
+`.trim();
+}
+
 export async function runAgent(
   messages: AgentMessage[],
   apiKey: string,
   model = process.env.OPENAI_MODEL ?? "gpt-4o-mini"
 ): Promise<AgentResponse> {
   const userMessage = latestUserMessage(messages);
+
+  if (!userMessage.trim()) {
+    throw new Error("No user message found.");
+  }
+
   const skillId = await selectSkill(userMessage);
   const skill = await loadSkill(skillId);
   const openai = new OpenAI({ apiKey });
 
+  const systemPrompt = buildSystemPrompt(skill.prompt);
+
   const completion = await openai.chat.completions.create({
     model,
-    messages: [{ role: "system", content: skill.prompt }, ...messages],
+    messages: [
+      {
+        role: "system",
+        content: systemPrompt,
+      },
+      ...messages,
+    ],
   });
 
   const content = completion.choices[0]?.message?.content;
