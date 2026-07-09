@@ -48,10 +48,12 @@ I bring **classroom-tested instructional design**, **software engineering discip
 | Area | Status |
 | --- | --- |
 | CS1 Unit 1 Tutor Skill | ✅ [`skills/cs1-unit1/SKILL.md`](skills/cs1-unit1/SKILL.md) |
-| Skill behavior tests | ✅ [`skills/cs1-unit1/TESTS.md`](skills/cs1-unit1/TESTS.md) — 18/18 passing |
-| Local web prototype | ✅ Next.js chat app (see below) |
-| Multi-skill agent routing | 📋 Planned |
-| Auth, history, deployment | 📋 Later |
+| CS1 Unit 2 Tutor Skill | ✅ [`skills/cs1-unit2/SKILL.md`](skills/cs1-unit2/SKILL.md) |
+| Skill behavior tests | ✅ Unit 1 (18/18) · Unit 2 (12/12) |
+| Local web prototype | ✅ Next.js chat app |
+| Multi-skill agent routing | ✅ Unit 1 ↔ Unit 2 |
+| Deployment | 🚧 Vercel (see below) |
+| Auth, history, usage limits | 📋 Later |
 
 **Also on the roadmap:** AP Computer Science A, Python tutoring, AI literacy, teacher productivity tools, executive AI coaching, and workshop-ready experiences.
 
@@ -67,9 +69,12 @@ minich-ai-platform/
 │   ├── page.tsx             # Chat interface
 │   └── api/chat/route.ts    # Loads SKILL.md, calls OpenAI
 ├── skills/                  # Reusable AI Skills (the core asset)
-│   └── cs1-unit1/
-│       ├── SKILL.md         # Behavior, philosophy, scope, integrity rules
-│       └── TESTS.md         # Representative prompts + expected behavior
+│   ├── cs1-unit1/
+│   │   ├── SKILL.md
+│   │   └── TESTS.md
+│   └── cs1-unit2/
+│       ├── SKILL.md
+│       └── TESTS.md
 ├── examples/                # Sample student questions for skill development
 ├── evals/                   # Future automated evaluation harnesses
 ├── plans/
@@ -107,7 +112,52 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Each message is sent to the OpenAI API with `skills/cs1-unit1/SKILL.md` as the system prompt.
+Open [http://localhost:3000](http://localhost:3000). The agent selects the best Skill and sends it to the OpenAI API as the system prompt.
+
+---
+
+## Deploy to Vercel
+
+**Requirements:** A [Vercel](https://vercel.com) account linked to GitHub, and your OpenAI API key.
+
+### 1. Import the repo
+
+1. Go to [vercel.com/new](https://vercel.com/new)
+2. Import **`minich-ai/minich-ai-platform`** from GitHub
+3. Framework preset should auto-detect **Next.js** — leave build settings as default:
+   - Build command: `npm run build`
+   - Output: (default)
+   - Install command: `npm install`
+
+### 2. Add environment variables
+
+Before deploying, add these under **Environment Variables**:
+
+| Name | Value | Environments |
+| --- | --- | --- |
+| `OPENAI_API_KEY` | your `sk-...` key | Production, Preview, Development |
+| `OPENAI_MODEL` | `gpt-4o-mini` | Production, Preview (optional) |
+
+Use the same key name as local dev (`minich-ai-platform-local` in OpenAI is fine).
+
+### 3. Deploy
+
+Click **Deploy**. Vercel builds from `main` and gives you a URL like `minich-ai-platform.vercel.app`.
+
+### 4. Smoke test
+
+Open your deployment URL and try:
+
+- *"I'm confused why my rectangle doesn't appear."* → should route to **Unit 1**
+- *"What's the difference between = and ==?"* → should route to **Unit 2**
+
+Check the footer for the selected skill name.
+
+### 5. Custom domain (optional, later)
+
+In Vercel → Project → **Domains**, add something like `tutor.minich.ai` when you're ready.
+
+**Note:** Every push to `main` auto-redeploys. Pull request previews get their own URLs if enabled.
 
 ---
 
@@ -127,7 +177,7 @@ Open [http://localhost:3000](http://localhost:3000). Each message is sent to the
 
 🚧 **Early prototype — Summer 2026**
 
-The foundation is in place: a production-quality first Skill, 18 passing behavior tests, a local chat prototype, and a clear roadmap. The next milestones are student testing and multi-skill agent routing.
+The foundation is in place: two CS1 Skills with passing behavior tests, a working chat prototype with agent routing, and deployment-ready Next.js config. Next milestone: deploy to Vercel and run a small student pilot.
 
 ---
 
