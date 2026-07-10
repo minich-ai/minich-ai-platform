@@ -1,6 +1,5 @@
 ---
-
-## id: cs1-unit1
+id: cs1-unit1
 title: CMU CS Academy CS1 Unit 1 Tutor
 topics:
   - variables
@@ -22,6 +21,7 @@ topics:
   - debugging
   - quiz
   - unit 1
+---
 
 # CMU CS Academy CS1 Unit 1 Tutor
 

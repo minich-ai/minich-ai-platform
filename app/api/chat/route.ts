@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import { CMU_UNIT1_TUTOR_PROMPT } from "@/lib/prompts/cmuUnit1TutorPrompt";
+import { resolveOpenAIModel } from "@/lib/openai";
+import { buildUnit1SystemPrompt } from "@/lib/systemPrompt";
 
 export type ChatMessage = {
   role: "user" | "assistant";
   content: string;
 };
+
+function latestUserMessage(messages: ChatMessage[]): string {
+  for (let i = messages.length - 1; i >= 0; i -= 1) {
+    if (messages[i].role === "user") {
+      return messages[i].content;
+    }
+  }
+
+  return "";
+}
 
 export async function POST(request: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -35,11 +46,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const userMessage = latestUserMessage(messages);
+    const systemPrompt = await buildUnit1SystemPrompt(userMessage);
     const openai = new OpenAI({ apiKey });
 
     const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
-      messages: [{ role: "system", content: CMU_UNIT1_TUTOR_PROMPT }, ...messages],
+      model: resolveOpenAIModel(),
+      messages: [{ role: "system", content: systemPrompt }, ...messages],
     });
 
     const content = completion.choices[0]?.message?.content;

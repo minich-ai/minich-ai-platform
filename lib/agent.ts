@@ -1,6 +1,7 @@
 import OpenAI from "openai";
+import { resolveOpenAIModel } from "@/lib/openai";
 import { loadSkill, listSkills, type SkillId } from "@/lib/skill";
-import { CMU_UNIT1_TUTOR_PROMPT } from "@/lib/prompts/cmuUnit1TutorPrompt";
+import { buildSystemPromptForSkill } from "@/lib/systemPrompt";
 
 export type AgentMessage = {
   role: "user" | "assistant";
@@ -66,20 +67,10 @@ export async function selectSkill(userMessage: string): Promise<SkillId> {
   return scores[0]?.id ?? "cs1-unit1";
 }
 
-function buildSystemPrompt(skillPrompt: string): string {
-  return `
-${CMU_UNIT1_TUTOR_PROMPT}
-
-Additional selected skill instructions:
-
-${skillPrompt}
-`.trim();
-}
-
 export async function runAgent(
   messages: AgentMessage[],
   apiKey: string,
-  model = process.env.OPENAI_MODEL ?? "gpt-4o-mini"
+  model = resolveOpenAIModel()
 ): Promise<AgentResponse> {
   const userMessage = latestUserMessage(messages);
 
@@ -91,7 +82,7 @@ export async function runAgent(
   const skill = await loadSkill(skillId);
   const openai = new OpenAI({ apiKey });
 
-  const systemPrompt = buildSystemPrompt(skill.prompt);
+  const systemPrompt = await buildSystemPromptForSkill(skillId, userMessage);
 
   const completion = await openai.chat.completions.create({
     model,

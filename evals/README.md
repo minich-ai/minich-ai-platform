@@ -7,3 +7,9 @@ Authoritative tutoring behavior tests for each skill live alongside the skill:
 ```
 skills/<skill-id>/TESTS.md
 ```
+
+CMU syntax regression prompts live in:
+
+```
+evals/cmu-syntax-regression.md
+```
