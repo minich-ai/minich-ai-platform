@@ -1,8 +1,8 @@
-# Minich AI Platform 
+# Minich AI Platform
 
 ## Vision
 
-Build a reusable library of AI tutoring **Skills** that eventually power one or more AI **Agents** capable of tutoring students (and later professionals) through a simple web application.
+Build a reusable library of AI tutoring **Skills** that eventually power one or more AI **Agents** capable of tutoring students and business professionals through a simple web application.
 
 The long-term goal is **not** to build a single Custom GPT or small set of skills.
 
@@ -16,8 +16,6 @@ The goal is to build a reusable AI platform that supports:
 - Future commercial offerings
 
 ---
-
-
 
 # Development Philosophy
 
@@ -53,15 +51,20 @@ skills/
     cs1-unit1/
         SKILL.md
         TESTS.md
-        examples/
+        knowledge/
 
     cs1-unit2/
         SKILL.md
         TESTS.md
-
+        knowledge/
+        
 examples/
-
+    student1.md
+    student2.md
+    
 docs/
+
+evals/
 ```
 
 Future skills may include:
@@ -71,11 +74,10 @@ Future skills may include:
 - CS1 Unit 3
 - CS1 Debugger
 - CMU Graphics Expert
-- AP CSA Unit 1 (CSAwesome)
+- AP CSA Unit 1 (CSAwesome2)
 - AP CSA FRQ Coach
 - Executive AI Coach
 - AI Literacy Coach
-- Cybersecurity Advisor
 - Python Style Coach
 - Reflection Coach
 - Quiz Generator
@@ -121,7 +123,7 @@ This becomes regression testing for tutoring quality.
 
 # Phase 3 — Build a Local Prototype
 
-Using Cursor Pro:
+Using a combination of Cursor Pro, Codex and CLI:
 
 Build a very small Next.js application.
 
@@ -279,6 +281,7 @@ Possible additional Skill collections:
 - AP Computer Science A
 - AI Literacy
 - Python
+- Raspberry Pi Projects
 - Robotics
 
 
@@ -297,6 +300,9 @@ Possible additional Skill collections:
 - AI Productivity
 - Prompt Engineering
 - AI Strategy
+- Financial Strategy - Personal
+- Financial Strategy - Corporate
+- M&A Research
 
 ---
 
@@ -319,7 +325,7 @@ Use Cursor Agent for:
 
 ---
 
-Use ChatGPT for:
+Use ChatGPT & Codex for:
 
 - Second opinions
 - Architecture discussions
@@ -430,10 +436,5 @@ A high-quality tutoring experience is the product. The web app, agents, authenti
 
 
 
-## One change I'd make to the plan
 
-After thinking through your long-term goals—retirement, consulting, AI literacy, tutoring, workshops, and educational software—I would make the **platform itself** the primary product, not just the tutor.
 
-In other words, you're not building "a CS1 tutor." You're building **Minich AI Platform**, whose first demonstration happens to be a CS1 tutor.
-
-That subtle shift will make it much easier to grow into AP CS A, executive coaching, AI consulting, and other domains without feeling like you're starting over. The platform stays the same; you simply add new, well-designed skills and experiences over time. I think that's a much stronger foundation for the career you're working toward after retirement.
