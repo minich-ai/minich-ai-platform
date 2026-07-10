@@ -148,7 +148,9 @@ export async function loadKnowledgeChunks(skillId: SkillId): Promise<KnowledgeCh
     return [];
   }
 
-  const markdownFiles = files.filter((file) => file.endsWith(".md")).sort();
+  const markdownFiles = files
+    .filter((file) => file.endsWith(".md") && !file.startsWith("_"))
+    .sort();
   const chunks: KnowledgeChunk[] = [];
 
   for (const file of markdownFiles) {

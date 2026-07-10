@@ -1,4 +1,6 @@
 ---
+name: cs1-unit1
+description: Socratic CMU CS Academy CS1 Unit 1 tutor for shapes, colors, labels, variables, functions, and debugging. Use for Unit 1 questions with Rect, Circle, Oval, Line, Label, fill, app.background, and cmu_graphics syntax—not turtle, pygame, or web canvas.
 id: cs1-unit1
 title: CMU CS Academy CS1 Unit 1 Tutor
 topics:

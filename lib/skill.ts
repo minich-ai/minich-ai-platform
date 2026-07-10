@@ -7,6 +7,8 @@ export type SkillId = (typeof SKILL_IDS)[number];
 
 export type SkillMetadata = {
   id: SkillId;
+  name: string;
+  description: string;
   title: string;
   topics: string[];
 };
@@ -15,22 +17,30 @@ export type Skill = SkillMetadata & {
   prompt: string;
 };
 
+type ParsedFrontmatter = {
+  id?: SkillId;
+  name?: string;
+  title?: string;
+  description?: string;
+  topics: string[];
+};
+
 function parseFrontmatter(raw: string): {
-  metadata: Partial<SkillMetadata>;
+  metadata: ParsedFrontmatter;
   body: string;
 } {
   if (!raw.startsWith("---\n")) {
-    return { metadata: {}, body: raw };
+    return { metadata: { topics: [] }, body: raw };
   }
 
   const end = raw.indexOf("\n---\n", 4);
   if (end === -1) {
-    return { metadata: {}, body: raw };
+    return { metadata: { topics: [] }, body: raw };
   }
 
   const frontmatter = raw.slice(4, end);
   const body = raw.slice(end + 5);
-  const metadata: Partial<SkillMetadata> = { topics: [] };
+  const metadata: ParsedFrontmatter = { topics: [] };
   let currentListKey: "topics" | null = null;
 
   for (const line of frontmatter.split("\n")) {
@@ -40,7 +50,7 @@ function parseFrontmatter(raw: string): {
     const listMatch = trimmed.match(/^- (.+)$/);
     if (listMatch && currentListKey === "topics") {
       const value = listMatch[1].trim().replace(/^["']|["']$/g, "");
-      metadata.topics?.push(value);
+      metadata.topics.push(value);
       continue;
     }
 
@@ -51,8 +61,14 @@ function parseFrontmatter(raw: string): {
     if (key === "id") {
       metadata.id = value as SkillId;
       currentListKey = null;
+    } else if (key === "name") {
+      metadata.name = value;
+      currentListKey = null;
     } else if (key === "title") {
       metadata.title = value;
+      currentListKey = null;
+    } else if (key === "description") {
+      metadata.description = value;
       currentListKey = null;
     } else if (key === "topics") {
       currentListKey = "topics";
@@ -67,6 +83,42 @@ function parseFrontmatter(raw: string): {
   return { metadata, body };
 }
 
+function resolveSkillMetadata(
+  directoryId: SkillId,
+  metadata: ParsedFrontmatter
+): SkillMetadata {
+  const id = metadata.id ?? (metadata.name as SkillId | undefined);
+  const name = metadata.name ?? metadata.id;
+  const title = metadata.title ?? metadata.description;
+  const description = metadata.description ?? metadata.title;
+
+  if (!id || !name || !title || !description) {
+    throw new Error(
+      `Skill ${directoryId} is missing required frontmatter (name/id and title/description).`
+    );
+  }
+
+  if (name !== directoryId) {
+    throw new Error(
+      `Skill ${directoryId} frontmatter name "${name}" must match the directory name.`
+    );
+  }
+
+  if (metadata.id && metadata.name && metadata.id !== metadata.name) {
+    throw new Error(
+      `Skill ${directoryId} frontmatter id and name must match when both are present.`
+    );
+  }
+
+  return {
+    id,
+    name,
+    description,
+    title,
+    topics: metadata.topics,
+  };
+}
+
 function skillPath(id: SkillId): string {
   return path.join(process.cwd(), "skills", id, "SKILL.md");
 }
@@ -74,20 +126,21 @@ function skillPath(id: SkillId): string {
 export async function loadSkill(id: SkillId): Promise<Skill> {
   const raw = await fs.readFile(skillPath(id), "utf-8");
   const { metadata, body } = parseFrontmatter(raw);
-
-  if (!metadata.id || !metadata.title) {
-    throw new Error(`Skill ${id} is missing required frontmatter (id, title).`);
-  }
+  const resolved = resolveSkillMetadata(id, metadata);
 
   return {
-    id: metadata.id,
-    title: metadata.title,
-    topics: metadata.topics ?? [],
+    ...resolved,
     prompt: body.trim(),
   };
 }
 
 export async function listSkills(): Promise<SkillMetadata[]> {
   const skills = await Promise.all(SKILL_IDS.map((id) => loadSkill(id)));
-  return skills.map(({ id, title, topics }) => ({ id, title, topics }));
+  return skills.map(({ id, name, description, title, topics }) => ({
+    id,
+    name,
+    description,
+    title,
+    topics,
+  }));
 }

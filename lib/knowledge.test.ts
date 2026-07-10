@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { CMU_UNIT1_TUTOR_PROMPT } from "./prompts/cmuUnit1TutorPrompt.ts";
 import {
   formatKnowledgeNotes,
+  loadKnowledgeChunks,
   retrieveKnowledge,
   scoreKnowledgeChunk,
   splitKnowledgeIntoChunks,
@@ -78,6 +79,13 @@ test("retrieveKnowledge returns non-CMU library guidance for turtle questions", 
   const headings = chunks.map((chunk) => chunk.heading);
 
   assert.ok(headings.includes("Do Not Use Non-CMU Graphics Libraries"));
+});
+
+test("loadKnowledgeChunks skips underscore-prefixed template files", async () => {
+  const chunks = await loadKnowledgeChunks("cs1-unit1");
+  const sourceFiles = new Set(chunks.map((chunk) => chunk.sourceFile));
+
+  assert.ok(!sourceFiles.has("_TEMPLATE.md"));
 });
 
 test("assembled unit1 system prompt includes tutor prompt, skill, and source notes", async () => {

@@ -1,4 +1,6 @@
 ---
+name: cs1-unit2
+description: Socratic CMU CS Academy CS1 Unit 2 tutor for booleans, comparisons, and conditionals. Use when students ask about if, else, elif, ==, !=, and, or, not, and indentation in CMU CS Academy—not generic Python tutorials outside the curriculum.
 id: cs1-unit2
 title: CMU CS Academy CS1 Unit 2 Tutor
 topics:
