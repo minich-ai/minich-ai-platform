@@ -1,11 +1,11 @@
 # Minich AI Platform
 
-> **A reusable AI platform for education, coaching, and professional AI adoption — built from the inside out.**
+**A reusable AI platform for education, coaching, and professional AI adoption, built from the inside out.**
 
 [Status](plans/ROADMAP.md)
 [Focus](#what-this-is)
 
-This repository is the working foundation for **[minich.ai](https://minich.ai)** — a platform that turns deep domain expertise and sound instructional design into **reusable AI Skills** that power tutoring agents, coaching experiences, and future commercial offerings.
+This repository is the working foundation for **[minich.ai](https://minich.ai)**, a platform that turns deep domain expertise and sound instructional design into **reusable AI Skills** that power tutoring agents, coaching experiences, and future commercial offerings.
 
 It is not a single Custom GPT. It is infrastructure for building many high-quality AI experiences from one coherent architecture.
 
@@ -17,18 +17,18 @@ Most AI products start with a chat box and hope the model behaves well. This pro
 
 **What should the AI *do*, for whom, and how do we know it's doing it well?**
 
-The answer is a library of **Skills** — versioned, testable specifications that define tutoring behavior, teaching philosophy, scope boundaries, and academic integrity rules. Agents load the right Skill for the context; students get consistent, thoughtful guidance instead of generic completions.
+The answer is a library of **Skills**: versioned, testable specifications that define tutoring behavior, teaching philosophy, scope boundaries, and academic integrity rules. Agents load the right Skill for the context; students get consistent, thoughtful guidance instead of generic completions.
 
 
 | Layer           | Role                                                       |
 | --------------- | ---------------------------------------------------------- |
 | **Skills**      | Reusable instructional assets (`SKILL.md` + `TESTS.md`)    |
-| **Agents**      | Orchestration — select a Skill, handle the conversation    |
+| **Agents**      | Orchestration: select a Skill, handle the conversation     |
 | **Application** | Simple web UI that delivers the experience                 |
 | **Evals**       | Regression testing for tutoring *quality*, not just uptime |
 
 
-The first demonstration is a **CMU CS Academy CS1 Unit 1 tutor** — Socratic, scope-aware, and designed for real beginners. The platform itself is the product; CS1 is proof that the approach works.
+The first demonstration is a **CMU CS Academy CS1 Unit 1 tutor**: Socratic, scope-aware, and designed for real beginners. The platform itself is the product; CS1 is proof that the approach works.
 
 ---
 
@@ -36,12 +36,12 @@ The first demonstration is a **CMU CS Academy CS1 Unit 1 tutor** — Socratic, s
 
 ## Why this matters (for organizations)
 
-If you're evaluating someone to help you adopt AI thoughtfully — not just wire up an API — this repo shows how I think about the problem:
+If you're evaluating someone to help you adopt AI thoughtfully, not just wire up an API, this repo shows how I think about the problem:
 
 - **Behavior before infrastructure.** Great AI experiences come from well-defined behavior, not from bolting auth and databases onto a vague prompt.
-- **Skills as assets.** Instructional and domain expertise gets captured in reusable, reviewable artifacts — not trapped in one-off chat sessions.
+- **Skills as assets.** Instructional and domain expertise gets captured in reusable, reviewable artifacts, not trapped in one-off chat sessions.
 - **Testable quality.** Each Skill ships with representative prompts and expected behaviors, so tutoring quality can be evaluated and improved over time.
-- **Built to scale across domains.** The same platform pattern supports K–12 CS tutoring, AP CSA, AI literacy workshops, executive coaching, and consulting engagements — by adding Skills, not rebuilding from scratch.
+- **Built to scale across domains.** The same platform pattern supports K–12 CS tutoring, AP CSA, AI literacy workshops, executive coaching, and consulting engagements by adding Skills, not rebuilding from scratch.
 
 I bring **classroom-tested instructional design**, **software engineering discipline**, and **practical AI implementation** to organizations that want AI that actually helps people learn and work better.
 
@@ -96,7 +96,7 @@ minich-ai-platform/
 └── README.md
 ```
 
-Each Skill is a self-contained instructional asset: purpose, audience, teaching process, code-example constraints, debugging approach, communication style, and academic integrity — all explicit and reviewable.
+Each Skill is a self-contained instructional asset: purpose, audience, teaching process, code-example constraints, debugging approach, communication style, and academic integrity, all explicit and reviewable.
 
 ---
 
@@ -106,11 +106,11 @@ Each Skill is a self-contained instructional asset: purpose, audience, teaching 
 
 Build from the inside out:
 
-1. **Build great tutoring behavior** — nail the Skill before writing platform code.
-2. **Build reusable Skills** — capture expertise in portable, versioned artifacts.
-3. **Build a simple web application** — prove the end-to-end loop (browser → app → model → response).
-4. **Test with real students** — validate that it teaches, not just answers.
-5. **Add infrastructure only when needed** — auth, databases, and deployment come after the experience is proven.
+1. **Build great tutoring behavior**: nail the Skill before writing platform code.
+2. **Build reusable Skills**: capture expertise in portable, versioned artifacts.
+3. **Build a simple web application**: prove the end-to-end loop (browser → app → model → response).
+4. **Test with real students**: validate that it teaches, not just answers.
+5. **Add infrastructure only when needed**: auth, databases, and deployment come after the experience is proven.
 
 > *Build one excellent Skill before building a sophisticated platform.*
 
@@ -144,7 +144,7 @@ Open [http://localhost:3000](http://localhost:3000). The agent selects the best 
 
 1. Go to [vercel.com/new](https://vercel.com/new)
 2. Import `minich-ai/minich-ai-platform` from GitHub
-3. Framework preset should auto-detect **Next.js** — leave build settings as default:
+3. Framework preset should auto-detect **Next.js**. Leave build settings as default:
   - Build command: `npm run build`
   - Output: (default)
   - Install command: `npm install`
@@ -207,10 +207,10 @@ For notes on OpenAI API pricing, model selection, and cost strategy, see `[docs/
 
 ## Status
 
-🚧 **Early prototype — Summer 2026**
+🚧 **Early prototype, Summer 2026**
 
 The foundation is in place: two CS1 Skills with passing behavior tests, a working chat prototype with agent routing, and deployment-ready Next.js config. Next milestone: deploy to Vercel and run a small student pilot.
 
 ---
 
-*Built by [Curt Minich](https://minich.ai) — educator, software engineer, and AI consultant.*
+*Built by [Curt Minich](https://minich.ai), educator, software engineer, and AI consultant.*
