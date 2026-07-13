@@ -1,6 +1,9 @@
 import fs from "fs/promises";
 import path from "path";
 
+/** Domain folder under skills/ (e.g. skills/education/cs1-unit1). */
+const SKILL_DOMAIN = "education";
+
 export const SKILL_IDS = ["cs1-unit1", "cs1-unit2"] as const;
 
 export type SkillId = (typeof SKILL_IDS)[number];
@@ -119,8 +122,12 @@ function resolveSkillMetadata(
   };
 }
 
+function skillDir(id: SkillId): string {
+  return path.join(process.cwd(), "skills", SKILL_DOMAIN, id);
+}
+
 function skillPath(id: SkillId): string {
-  return path.join(process.cwd(), "skills", id, "SKILL.md");
+  return path.join(skillDir(id), "SKILL.md");
 }
 
 export async function loadSkill(id: SkillId): Promise<Skill> {

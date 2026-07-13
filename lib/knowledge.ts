@@ -2,6 +2,9 @@ import fs from "fs/promises";
 import path from "path";
 import type { SkillId } from "@/lib/skill";
 
+/** Keep in sync with SKILL_DOMAIN in lib/skill.ts */
+const SKILL_DOMAIN = "education";
+
 export type KnowledgeChunk = {
   sourceFile: string;
   heading: string;
@@ -30,7 +33,7 @@ const QUERY_BOOSTS: Array<{ pattern: RegExp; headings: string[] }> = [
 ];
 
 function knowledgeDir(skillId: SkillId): string {
-  return path.join(process.cwd(), "skills", skillId, "knowledge");
+  return path.join(process.cwd(), "skills", SKILL_DOMAIN, skillId, "knowledge");
 }
 
 function stripFrontmatter(raw: string): { body: string; topics: string[] } {
