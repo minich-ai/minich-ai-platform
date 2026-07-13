@@ -105,9 +105,16 @@ textarea {
   max-width: 88%;
   padding: 0.85rem 1rem;
   border-radius: 12px;
-  white-space: pre-wrap;
   word-break: break-word;
   box-shadow: var(--shadow);
+}
+
+.message.user {
+  white-space: pre-wrap;
+}
+
+.message-text {
+  margin: 0;
 }
 
 .message.user {
@@ -221,4 +228,62 @@ textarea {
   color: var(--muted);
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 0.9rem;
+}
+
+.markdown {
+  font-size: 0.98rem;
+}
+
+.markdown > :first-child {
+  margin-top: 0;
+}
+
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol {
+  margin: 0.65rem 0;
+}
+
+.markdown ul,
+.markdown ol {
+  padding-left: 1.35rem;
+}
+
+.markdown li + li {
+  margin-top: 0.25rem;
+}
+
+.markdown strong {
+  font-weight: 700;
+}
+
+.markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: #f5f5f4;
+  border: 1px solid #e7e5e4;
+}
+
+.markdown pre {
+  margin: 0.75rem 0;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: #1c1917;
+  border: 1px solid #292524;
+}
+
+.markdown pre code {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #f5f5f4;
+  font-size: 0.88rem;
+  line-height: 1.5;
 }

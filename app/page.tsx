@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { MarkdownMessage } from "@/app/components/MarkdownMessage";
 
 type Message = {
   role: "user" | "assistant";
@@ -103,7 +104,11 @@ export default function HomePage() {
                 <span className="message-role">
                   {message.role === "user" ? "You" : "Tutor"}
                 </span>
-                {message.content}
+                {message.role === "assistant" ? (
+                  <MarkdownMessage content={message.content} />
+                ) : (
+                  <p className="message-text">{message.content}</p>
+                )}
               </article>
             ))}
             {isLoading ? <div className="typing">Thinking…</div> : null}
