@@ -82,8 +82,7 @@ export default function HomePage() {
         <p className="eyebrow">Minich AI Platform</p>
         <h1>CS1 Tutor</h1>
         <p>
-          Ask a programming question. The agent selects the best Skill for your
-          topic — Unit 1 (shapes and variables) or Unit 2 (conditionals).
+          Ask a programming question on Unit 1 of CMU CS Academy.
         </p>
       </header>
 
@@ -91,8 +90,8 @@ export default function HomePage() {
         {messages.length === 0 && !isLoading ? (
           <div className="empty-state">
             Try: &ldquo;I&apos;m confused why my rectangle doesn&apos;t
-            appear.&rdquo; or &ldquo;What&apos;s the difference between = and
-            ==?&rdquo;
+            appear.&rdquo; or &ldquo;I set fill to &apos;red&apos; but my shape
+            is still black — what did I miss?&rdquo;
           </div>
         ) : (
           <div className="messages">
