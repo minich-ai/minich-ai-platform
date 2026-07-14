@@ -12,6 +12,8 @@ Longer term (elsewhere and later): workshops, AI literacy, and professional coac
 
 ---
 
+
+
 ## Development philosophy
 
 Build from the inside out:
@@ -26,18 +28,22 @@ Build from the inside out:
 
 ---
 
+
+
 ## What’s already done (Phases 1–5, early)
 
 These are no longer “next”—they’re the foundation:
 
-| Item | Status |
-| --- | --- |
-| CS1 Unit 1 `SKILL.md` + `TESTS.md` (18/18) | Done |
-| Distilled Unit 1 knowledge + local retrieval | Done |
-| CS1 Unit 2 Skill + tests written | Done (not yet in live chat route) |
-| Next.js chat prototype + OpenAI | Done |
-| Deployed on Vercel | Done ([live demo](https://minich-ai-platform.vercel.app)) |
-| Public project site | [socraticcoachai.com](https://www.socraticcoachai.com/) |
+
+| Item                                         | Status                                                    |
+| -------------------------------------------- | --------------------------------------------------------- |
+| CS1 Unit 1 `SKILL.md` + `TESTS.md` (18/18)   | Done                                                      |
+| Distilled Unit 1 knowledge + local retrieval | Done                                                      |
+| CS1 Unit 2 Skill + tests written             | Done (not yet in live chat route)                         |
+| Next.js chat prototype + OpenAI              | Done                                                      |
+| Deployed on Vercel                           | Done ([live demo](https://minich-ai-platform.vercel.app)) |
+| Public project site                          | [socraticcoachai.com](https://www.socraticcoachai.com/)   |
+
 
 **Honest gap:** the live demo is **Unit 1 only**. Multi-skill routing scaffolding exists; wiring Unit 2 (and others) into production is still ahead.
 
@@ -57,6 +63,8 @@ minich-ai-platform/
 
 ---
 
+
+
 ## Phase 6 — Student testing (next priority)
 
 Small pilot with **5–10 trusted students**.
@@ -74,6 +82,8 @@ Related public work (same design values): **Bio Buddy** / 2026 Presidential AI C
 
 ---
 
+
+
 ## Phase 7 — Expand the Skill library (learner-facing)
 
 After Unit 1 feels reliably strong with real students, grow what learners can study—**skills as assets**, not a bigger marketing claim.
@@ -87,21 +97,29 @@ After Unit 1 feels reliably strong with real students, grow what learners can st
 - **AP Computer Science A** (e.g. CSAwesome2) Skills when ready
 - Python practice Skills (style, debugging, quiz prep)
 
+
+
 ### Projects that spark interest
 
 - Raspberry Pi / maker-style project coaching (when a solid Skill exists)
 - Robotics / introductory project help (same rule: Skill first)
+
+
 
 ### AI literacy for students & families
 
 - Plain-language “how to use AI without cheating” guidance
 - Study skills / reflection coach alongside course content
 
+
+
 ### Later (light touch here)
 
-Adult / professional offerings (executive AI coaching, workshops, consulting) are real long-term options, but they are **not** the primary roadmap for this education repo. Those conversations belong mainly on LinkedIn and the project site—not as inflated milestones in GitHub.
+Adult / professional offerings (executive AI coaching, workshops, consulting) are long-term options, but they are **not** the primary roadmap for this education repo. 
 
 ---
+
+
 
 ## Phase 8 — Product readiness for families
 
@@ -112,9 +130,11 @@ When tutoring quality holds up in pilots:
 - Usage limits appropriate for a tutoring practice
 - Clear parent-facing academic integrity wording in the product UI
 
-Possible eventual URL: `tutor.minich.ai` or a domain under socraticcoachai.com—decide when the pilot earns it.
+Possible eventual URL: `tutor.minich.com` or a domain under socraticcoachai.com—decide when the pilot earns it.
 
 ---
+
+
 
 ## Near-term milestones
 
@@ -126,25 +146,29 @@ Possible eventual URL: `tutor.minich.ai` or a domain under socraticcoachai.com�
 
 ---
 
+
+
 ## Skill design standard (unchanged)
 
 Every Skill should include:
 
 - `SKILL.md` — purpose, audience, philosophy, scope, process, integrity, style  
-- `TESTS.md` — representative prompts and expected behaviors  
+- `TESTS.md` — representative prompts and expected behaviors
 
 Prefer **teacher-authored, paraphrased knowledge** under `knowledge/` over copying publisher lesson text. Details: [docs/knowledge-distillation-workflow.md](../docs/knowledge-distillation-workflow.md).
 
 ---
 
+
+
 ## Long-term learner experience
 
 Students (and parents) should eventually be able to:
 
-1. Open a trustworthy tutoring site  
-2. Ask a course-scoped question  
-3. Get Socratic help that builds independence  
-4. Practice with confidence—not copy-paste answers  
+1. Open a trustworthy tutoring site
+2. Ask a course-scoped question
+3. Get Socratic help that builds independence
+4. Practice with confidence—not copy-paste answers
 
 Behavior comes from the Skill library. The website is just how that help is delivered.
 
