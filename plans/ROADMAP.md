@@ -1,440 +1,153 @@
-# Minich AI Platform
+# Minich AI Platform — Roadmap
 
 ## Vision
 
-Build a reusable library of AI tutoring **Skills** that eventually power one or more AI **Agents** capable of tutoring students and business professionals through a simple web application.
+Build a growing library of reusable AI tutoring **Skills** that power a simple web tutor students (and later adult learners) can use with confidence.
 
-The long-term goal is **not** to build a single Custom GPT or small set of skills.
+Start with **excellent CMU CS Academy CS1 tutoring**, then expand outward—more units, more courses, more subjects—without rebuilding the platform each time.
 
-The goal is to build a reusable AI platform that supports:
+Near-term focus: students, tutees, and families who want thoughtful AI help that **teaches**, not homework shortcuts.
 
-- Student tutoring
-- Adult AI literacy
-- Executive AI coaching
-- Consulting
-- Workshops
-- Future commercial offerings
+Longer term (elsewhere and later): workshops, AI literacy, and professional coaching. Those stay secondary here so this repo stays honest about what’s shipping for learners.
 
 ---
 
-# Development Philosophy
+## Development philosophy
 
-Build from the inside out.
+Build from the inside out:
 
-Instead of beginning with authentication, databases, or school integrations:
+1. Nail tutoring behavior in a Skill.
+2. Test that behavior with representative student prompts.
+3. Ship a simple app that uses the Skill.
+4. Test with real students and refine.
+5. Add auth, history, and school-ready features only when the tutoring experience earns them.
 
-1. Build great tutoring behavior.
-2. Build reusable Skills.
-3. Build a simple web application.
-4. Test with real students.
-5. Add infrastructure only when needed.
+**Guiding line:** Build one excellent Skill before building a sophisticated platform.
 
 ---
 
+## What’s already done (Phases 1–5, early)
 
+These are no longer “next”—they’re the foundation:
 
-# Phase 1 — Build the Skill Library
+| Item | Status |
+| --- | --- |
+| CS1 Unit 1 `SKILL.md` + `TESTS.md` (18/18) | Done |
+| Distilled Unit 1 knowledge + local retrieval | Done |
+| CS1 Unit 2 Skill + tests written | Done (not yet in live chat route) |
+| Next.js chat prototype + OpenAI | Done |
+| Deployed on Vercel | Done ([live demo](https://minich-ai-platform.vercel.app)) |
+| Public project site | [socraticcoachai.com](https://www.socraticcoachai.com/) |
 
-Repository:
+**Honest gap:** the live demo is **Unit 1 only**. Multi-skill routing scaffolding exists; wiring Unit 2 (and others) into production is still ahead.
+
+Current layout (simplified):
 
 ```
 minich-ai-platform/
+├── app/                 # Chat UI + API
+├── lib/                 # Prompts, retrieval, skill loading
+├── skills/education/
+│   ├── cs1-unit1/       # Live + knowledge/
+│   └── cs1-unit2/       # Written; not live yet
+├── docs/
+├── evals/
+└── plans/ROADMAP.md
 ```
-
-Initial structure:
-
-```
-README.md
-
-skills/
-
-    cs1-unit1/
-        SKILL.md
-        TESTS.md
-        knowledge/
-
-    cs1-unit2/
-        SKILL.md
-        TESTS.md
-        knowledge/
-        
-examples/
-    student1.md
-    student2.md
-    
-docs/
-
-evals/
-```
-
-Future skills may include:
-
-- CS1 Unit 1 (CMU CS Academy)
-- CS1 Unit 2
-- CS1 Unit 3
-- CS1 Debugger
-- CMU Graphics Expert
-- AP CSA Unit 1 (CSAwesome2)
-- AP CSA FRQ Coach
-- Executive AI Coach
-- AI Literacy Coach
-- Python Style Coach
-- Reflection Coach
-- Quiz Generator
-
-Each Skill should become a reusable instructional asset.
 
 ---
 
+## Phase 6 — Student testing (next priority)
 
+Small pilot with **5–10 trusted students**.
 
-# Phase 2 — Evaluate the Skills
+Questions to answer:
 
-Each Skill should have:
+- Does the Socratic style actually help beginners?
+- Does it stay in CMU CS Academy syntax?
+- Does it avoid giving full graded solutions?
+- Would a parent trust this as a homework helper?
 
-```
-SKILL.md
-```
+Collect feedback → refine Skills and knowledge notes → repeat.
 
-describing:
-
-- Purpose
-- Audience
-- Teaching philosophy
-- Scope
-- Tutoring process
-- Output style
-- Academic integrity
-- Examples
-
-Each Skill should also have:
-
-```
-TESTS.md
-```
-
-containing representative prompts and expected behavior.
-
-This becomes regression testing for tutoring quality.
+Related public work (same design values): **Bio Buddy** / 2026 Presidential AI Challenge — see the project site. Separate product; same “guide, don’t shortcut” idea.
 
 ---
 
+## Phase 7 — Expand the Skill library (learner-facing)
 
+After Unit 1 feels reliably strong with real students, grow what learners can study—**skills as assets**, not a bigger marketing claim.
 
-# Phase 3 — Build a Local Prototype
+### CMU CS Academy & high school CS
 
-Using a combination of Cursor Pro, Codex and CLI:
+- Wire **Unit 2** (conditionals) into the live tutor
+- Unit 3+ CMU CS1 topics via distilled knowledge files
+- CS1 debugger / “why is this drawing wrong?” Skill
+- Stronger CMU Graphics expertise notes
+- **AP Computer Science A** (e.g. CSAwesome2) Skills when ready
+- Python practice Skills (style, debugging, quiz prep)
 
-Build a very small Next.js application.
+### Projects that spark interest
 
-Version 1 should simply do:
+- Raspberry Pi / maker-style project coaching (when a solid Skill exists)
+- Robotics / introductory project help (same rule: Skill first)
 
-```
-Browser
+### AI literacy for students & families
 
-↓
+- Plain-language “how to use AI without cheating” guidance
+- Study skills / reflection coach alongside course content
 
-Chat page
+### Later (light touch here)
 
-↓
-
-OpenAI API
-
-↓
-
-Response
-```
-
-No authentication.
-
-No database.
-
-No deployment.
-
-No analytics.
-
-Only prove the tutoring loop.
+Adult / professional offerings (executive AI coaching, workshops, consulting) are real long-term options, but they are **not** the primary roadmap for this education repo. Those conversations belong mainly on LinkedIn and the project site—not as inflated milestones in GitHub.
 
 ---
 
+## Phase 8 — Product readiness for families
 
+When tutoring quality holds up in pilots:
 
-# Phase 4 — Build the First Agent
-
-The first agent should:
-
-- Read the appropriate Skill
-- Receive the student's question
-- Produce a tutoring response
-
-Initially only one Skill will exist.
-
-Eventually:
-
-```
-Student Question
-
-↓
-
-Agent
-
-↓
-
-Determine topic
-
-↓
-
-Load appropriate Skill
-
-↓
-
-Generate response
-```
-
-Example:
-
-Rectangle question
-
-↓
-
-CS1 Unit 1 Skill
-
-Variable question
-
-↓
-
-CS1 Unit 1 Skill
-
-Quiz request
-
-↓
-
-Quiz Skill
-
----
-
-
-
-# Phase 5 — Deploy
-
-Deploy the application using:
-
-Frontend:
-
-- Vercel
-
-Backend:
-
-- Next.js API routes
-
-AI:
-
-- OpenAI API
-
-Repository:
-
-- GitHub
-
-Eventually add:
-
-- Supabase authentication
+- Simple accounts / login (e.g. Supabase)
 - Conversation history
-- User accounts
-- Usage limits
+- Usage limits appropriate for a tutoring practice
+- Clear parent-facing academic integrity wording in the product UI
+
+Possible eventual URL: `tutor.minich.ai` or a domain under socraticcoachai.com—decide when the pilot earns it.
 
 ---
 
+## Near-term milestones
 
-
-# Phase 6 — Student Testing
-
-Begin with:
-
-5–10 trusted student testers.
-
-Goals:
-
-- Does the tutoring style help?
-- Does it ask good Socratic questions?
-- Does it avoid simply giving answers?
-- Does it feel like Mr. Minich?
-
-Collect feedback.
-
-Improve the Skills.
-
-Repeat.
+1. **Student pilot** for the live Unit 1 tutor (feedback loop).
+2. **Wire Unit 2** into `/api/chat` (or a clear unit chooser) so conditionals questions work for real.
+3. **More Unit 1 knowledge cards** (lesson-by-lesson distillation).
+4. **Smoke-check** CMU-syntax regressions after each Skill change (`evals/` + `npm test`).
+5. Only then: auth / history for a slightly larger cohort.
 
 ---
 
+## Skill design standard (unchanged)
 
+Every Skill should include:
 
-# Phase 7 — Expand
+- `SKILL.md` — purpose, audience, philosophy, scope, process, integrity, style  
+- `TESTS.md` — representative prompts and expected behaviors  
 
-After CS1:
-
-Possible additional Skill collections:
-
-### High School
-
-- CMU CS Academy
-- AP Computer Science A
-- AI Literacy
-- Python
-- Raspberry Pi Projects
-- Robotics
-
-
-
-### College
-
-- Data Structures
-- Software Engineering
-
-
-
-### Professional
-
-- Executive AI Coaching
-- AI Adoption
-- AI Productivity
-- Prompt Engineering
-- AI Strategy
-- Financial Strategy - Personal
-- Financial Strategy - Corporate
-- M&A Research
+Prefer **teacher-authored, paraphrased knowledge** under `knowledge/` over copying publisher lesson text. Details: [docs/knowledge-distillation-workflow.md](../docs/knowledge-distillation-workflow.md).
 
 ---
 
+## Long-term learner experience
 
+Students (and parents) should eventually be able to:
 
-# Development Environment
+1. Open a trustworthy tutoring site  
+2. Ask a course-scoped question  
+3. Get Socratic help that builds independence  
+4. Practice with confidence—not copy-paste answers  
 
-Primary development tool:
-
-✅ Cursor Pro
-
-Use Cursor Agent for:
-
-- Coding
-- Repository management
-- Architecture implementation
-- Refactoring
-- Debugging
-- Testing
+Behavior comes from the Skill library. The website is just how that help is delivered.
 
 ---
 
-Use ChatGPT & Codex for:
-
-- Second opinions
-- Architecture discussions
-- Educational design
-- Tutoring philosophy
-- Product ideas
-- Business strategy
-- Technology comparisons
-
----
-
-GitHub remains the source of truth for all code and Skills.
-
----
-
-
-
-# Immediate Milestones
-
-
-
-## Milestone 1
-
-Complete:
-
-```
-skills/cs1-unit1/SKILL.md
-```
-
----
-
-
-
-## Milestone 2
-
-Create:
-
-```
-skills/cs1-unit1/TESTS.md
-```
-
-with approximately 20 representative prompts.
-
----
-
-
-
-## Milestone 3
-
-Develop:
-
-```
-skills/cs1-unit2/
-```
-
----
-
-
-
-## Milestone 4
-
-Build the first local web prototype.
-
----
-
-
-
-## Milestone 5
-
-Test with real students.
-
----
-
-
-
-# Long-Term Vision
-
-Eventually create:
-
-```
-tutor.minich.ai
-```
-
-Students will:
-
-- Open the website
-- Log in (eventually)
-- Ask questions
-- Receive personalized tutoring
-- Practice programming
-- Build confidence
-
-The tutoring behavior will be powered by a growing library of reusable AI Skills.
-
-Future versions may include AI agents capable of selecting the appropriate Skill automatically.
-
----
-
-
-
-# Guiding Principle
-
-**Build one excellent Skill before building a sophisticated platform.**
-
-A high-quality tutoring experience is the product. The web app, agents, authentication, databases, and deployment are simply delivery mechanisms.
-
----
-
-
-
-
-
+*Roadmap is a plan, not a promise. Status above is calibrated to Summer 2026.*
