@@ -1,116 +1,121 @@
 # Minich AI Platform
 
-A small Next.js app and a library of versioned **AI Skills** for Socratic tutoring—starting with a live **CMU CS Academy CS1** tutor.
+An API-only Next.js service for reusable, versioned AI Skills. Its first live
+consumer is [SocraticCoachAI.com](https://socraticcoachai.com), which calls this
+service for CMU CS Academy CS1 tutoring.
 
-**Live demo:** [minich-ai-platform.vercel.app](https://minich-ai-platform.vercel.app)  
-**Project site:** [socraticcoachai.com](https://www.socraticcoachai.com/)
+The platform intentionally owns tutor behavior, OpenAI access, rate limits, and
+usage metering. Consumer websites own their user interface and product-specific
+data.
 
-The goal is not a generic chatbot. Each Skill spells out who the tutor is for, what it may teach, how it should teach (Socratic, short, scope-aware), and what it must not do—including completing graded homework for students.
+## What is live
 
----
+- `POST /api/chat` — authenticated Unit 1 Socratic tutor
+- Per-consumer API keys stored as SHA-256 hashes
+- Per-consumer sliding-window rate limits in Upstash Redis
+- Monthly request, success, failure, and token counters in Upstash Redis
+- `GET /api/usage` — each consumer can inspect its own usage
+- Unit 1 Skill, teacher-authored knowledge, and behavior tests
+- Unit 2 Skill and routing scaffolding (not yet wired into `/api/chat`)
 
-## What works today
-
-| Area | Status |
-| --- | --- |
-| CS1 Unit 1 Skill + knowledge notes | Live in the demo |
-| Unit 1 behavior tests | 18/18 documented PASS |
-| CS1 Unit 2 Skill + tests | Written (12/12 PASS); not yet wired into the live chat route |
-| Next.js chat UI + OpenAI API | Deployed on Vercel |
-| Local Markdown retrieval into the system prompt | In use for Unit 1 |
-| Auth, chat history, usage limits | Not built yet |
-
-The live deployment currently runs the **Unit 1** tutor (shapes, colors, labels, variables). Skill-selection / multi-unit routing exists as scaffolding in `lib/agent.ts`; the production chat route is Unit 1–only until that wiring is finished.
-
----
-
-## How it is built
-
-Tutoring quality is treated as a product requirement, not a hope:
-
-1. **Hardcoded tutor constraints** — stay on CMU CS Academy / `cmu_graphics` syntax; do not teach `turtle`, `pygame`, etc. for CS1 questions.
-2. **`SKILL.md`** — teaching process, academic integrity, and scope.
-3. **Distilled knowledge files** — teacher-authored facts under `skills/education/cs1-unit1/knowledge/` (not scraped lesson pages).
-4. **Retrieval** — relevant knowledge chunks are injected into the system prompt for each question.
-5. **Behavior tests** — representative student prompts and expected behaviors in each Skill’s `TESTS.md`.
-
-Parents and teachers: the tutor is designed to **guide and question**, not to hand out finished homework solutions.
-
-Related public work (see the project site): **Bio Buddy**, a Socratic biology study coach recognized in the **2026 Presidential AI Challenge** (Pennsylvania), developed with Chris Killinger at Wyomissing Area High School. Same design principles; separate product.
-
----
+There is deliberately no chat page in this repository. The public interface is
+maintained in `cminich/socratic-coach-ai-website`.
 
 ## Repository layout
 
-```
-minich-ai-platform/
-├── app/                          # Chat UI + /api/chat
-├── lib/                          # System prompt assembly, retrieval, skill loading
-├── skills/education/
-│   ├── cs1-unit1/                # Live Skill + TESTS.md + knowledge/
-│   └── cs1-unit2/                # Skill + TESTS.md (not yet in live route)
-├── docs/                         # Model choice, knowledge workflow, CMU-syntax guardrails
-├── evals/                        # Manual syntax regression prompts; future automations
-├── examples/                     # Sample student questions
-└── plans/ROADMAP.md              # Longer-term plan
+```text
+app/api/             # Authenticated HTTP endpoints
+lib/                 # Auth, metering, prompts, retrieval, and skill loading
+skills/education/    # Versioned Skills, tests, and knowledge
+evals/               # Manual regression prompts
+docs/                # Authoring and model-selection notes
+scripts/             # Local key-generation utilities
 ```
 
-Skills follow a YAML frontmatter + Markdown pattern aligned with the [Agent Skills](https://agentskills.io/specification) `name` / `description` fields, plus project-specific metadata used for loading and topic matching.
+`next.config.ts` includes the Markdown skill assets in Vercel's `/api/chat`
+function bundle. Keep that tracing configuration when reorganizing Skills.
 
----
+## Local setup
 
-## Run locally
-
-**Requirements:** Node.js 18+, an [OpenAI API key](https://platform.openai.com/api-keys)
+Requirements: Node.js 18+ and an OpenAI API key.
 
 ```bash
 npm install
 cp .env.example .env.local
-# Set OPENAI_API_KEY (OPENAI_MODEL defaults to gpt-5.4)
-
-npm run dev
+npm run keys:generate
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Copy the generated hashes into the platform `.env.local`. Put the plaintext
+`fakeclient1` key in the website's `CS1_TUTOR_API_KEY`; keep `fakeclient2` for
+manual client testing. Never commit plaintext keys.
+
+The Vercel Upstash integration supplies `KV_REST_API_URL` and
+`KV_REST_API_TOKEN`. Pull them locally with:
 
 ```bash
-npm test    # retrieval / prompt-assembly checks
+vercel env pull .env.local --yes
 ```
 
----
+Then run:
 
-## Deploy (Vercel)
+```bash
+npm run dev
+npm test
+```
 
-The production app is already hosted on Vercel. To recreate or fork:
+## Calling the API
 
-1. Import this repo in Vercel (Next.js defaults are fine).
-2. Set `OPENAI_API_KEY` (and optionally `OPENAI_MODEL=gpt-5.4`) for Production and Preview.
-3. Deploy and smoke-test with a Unit 1 question such as: *“I’m confused why my rectangle doesn’t appear.”*
+```bash
+curl https://minich-ai-platform.vercel.app/api/chat \
+  -H "Authorization: Bearer $FAKECLIENT2_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"Why is my rectangle invisible?"}]}'
+```
 
-Notes on model choice and cost: [docs/openai-api-pricing-and-model-selection.md](docs/openai-api-pricing-and-model-selection.md).
+Missing or invalid keys receive `401`. Consumers over the default 20 requests
+per rolling minute receive `429` with `X-RateLimit-*` headers.
 
----
+## Inspecting usage
 
-## Roadmap (not current claims)
+A consumer key can read only its own current-month counters:
 
-Possible next Skills and features—added as assets and wiring, not as unfinished marketing:
+```bash
+curl https://minich-ai-platform.vercel.app/api/usage \
+  -H "Authorization: Bearer $FAKECLIENT2_API_KEY"
+```
 
-- Wire Unit 2 (conditionals) into the live chat route
-- Broader CMU CS1 coverage via distilled knowledge files
-- AP Computer Science A Skills
-- Auth, history, and usage limits for a small student pilot
-- Stronger automated eval harnesses under `evals/`
+Add `?month=2026-07` for another month. The private metering admin key can query
+a named consumer with `?consumer=fakeclient1`.
 
-Full plan: [plans/ROADMAP.md](plans/ROADMAP.md).
+Counters are retained for 400 days and include:
 
----
+- authorized chat requests
+- successful and failed OpenAI calls
+- prompt, completion, and total tokens
 
-## Contact
+These counters are suitable for learning and fake invoices. A real billing
+system should later use an append-only SQL ledger rather than Redis as its sole
+source of truth.
 
-Curt Minich — educator and AI / software consultant  
-**Site:** [socraticcoachai.com](https://www.socraticcoachai.com/)  
-**Demo:** [minich-ai-platform.vercel.app](https://minich-ai-platform.vercel.app)
+## Environment variables
 
----
+Platform:
 
-*Early prototype · Summer 2026*
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL`
+- `API_CONSUMER_KEY_HASHES`
+- `METERING_ADMIN_KEY_HASH`
+- `KV_REST_API_URL`
+- `KV_REST_API_TOKEN`
+- `RATE_LIMIT_REQUESTS_PER_MINUTE`
+
+Website consumer:
+
+- `CS1_TUTOR_API_KEY`
+- `CS1_TUTOR_API_URL` (optional override)
+
+## Deployment
+
+The Vercel project `minich-ai-platform` deploys automatically from
+`minich-ai/minich-ai-platform` on pushes to `main`. The Upstash Redis resource
+must remain connected to that Vercel project.
